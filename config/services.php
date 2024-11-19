@@ -27,6 +27,17 @@ return [
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'), // Changed this line
     ],
 
+    'zoom' => [
+        'client_id' => env('ZOOM_CLIENT_ID'),
+        'client_secret' => env('ZOOM_CLIENT_SECRET'),
+        'redirect_url' => env('ZOOM_REDIRECT_URI'),
+        'auth_url' => env('ZOOM_AUTH_URL'),
+        'token_url' => env('ZOOM_TOKEN_URL'),
+        'api_url' => env('ZOOM_API_URL'),
+        'token_secret' => env('ZOOM_TOKEN_SECRET'),
+        'token_verify' => env('ZOOM_TOKEN_VERIFY'),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

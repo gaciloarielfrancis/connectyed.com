@@ -1,1 +1,0 @@
-import{d as o,o as t,e}from"./app-Cf285zSj.js";import{_ as s}from"./_plugin-vue_export-helper-DlAUqK2U.js";const n={name:"Communication"},a=e("h2",{class:"text-xl font-bold mb-4"},"Message",-1),c=e("p",null,"Message!",-1),r=[a,c];function _(i,m,d,l,p,f){return t(),o("div",null,r)}const x=s(n,[["render",_]]);export{x as default};

@@ -15,6 +15,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\API\GoogleMeetController;
+use App\Http\Controllers\API\ZoomController;
 use App\Http\Controllers\API\NewsletterController;
 use App\Http\Controllers\API\MeetingController;
 use App\Http\Controllers\API\CriteriaController;
@@ -45,6 +46,11 @@ Route::get('/google/check-authorization', [GoogleMeetController::class, 'checkGo
 Route::get('/google/upcoming-meetings', [GoogleMeetController::class, 'getUpcomingMeetings'])->middleware('auth:api');
 
 Route::get('google/meetings/{id}', [GoogleMeetController::class, 'getMeeting']);
+
+// Zoom
+Route::post('/zoom/pay-to-schedule', [ZoomController::class, 'payForMeeting'])->middleware('auth:api');
+Route::post('/zoom/create-meeting', [ZoomController::class, 'createMeeting'])->middleware('auth:api');
+// Route::get('zoom/callback/{id}', [ZoomController::class, 'getMeeting']);
 
 // Token Management
 Route::post('/google/refresh-token', [GoogleMeetController::class, 'refreshGoogleToken'])->middleware('auth:api');

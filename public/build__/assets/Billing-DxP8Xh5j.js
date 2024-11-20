@@ -1,1 +1,0 @@
-import{d as o,o as t,e}from"./app-Cf285zSj.js";import{_ as n}from"./_plugin-vue_export-helper-DlAUqK2U.js";const s={name:"Billing"},l=e("h2",{class:"text-xl font-bold mb-4"},"Billing",-1),c=e("p",null,"Billing!",-1),i=[l,c];function a(r,_,d,p,f,m){return t(),o("div",null,i)}const h=n(s,[["render",a]]);export{h as default};

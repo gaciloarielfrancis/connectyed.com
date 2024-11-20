@@ -1,1 +1,0 @@
-import{_ as s,e as t,o,f as e}from"./app-D0Fdxhbm.js";const a={name:"message"},n=e("h2",{class:"text-xl font-bold mb-4"},"Messages",-1),c=e("p",null,"Messages!",-1),_=[n,c];function r(l,d,p,f,i,m){return o(),t("div",null,_)}const h=s(a,[["render",r]]);export{h as default};

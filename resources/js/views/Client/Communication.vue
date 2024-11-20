@@ -402,7 +402,8 @@ export default {
 
         // Send a request to create a Stripe Checkout session
         const response = await axios.post(
-          '/api/google/create-meeting',
+          // '/api/google/create-meeting',
+          '/api/zoom/pay-to-schedule',
           {
             matchmaker_id: this.selectedMatchmaker.id,
             client_ids: [this.user.id], // Assuming the client is scheduling for themselves

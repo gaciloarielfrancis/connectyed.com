@@ -164,7 +164,7 @@ class ZoomController extends Controller {
             'google_meet_link' => $response->join_url,
             'google_meet_password' => $response->password,
             'meeting_response' => $response->agenda,
-            'start_time' => Carbon::parse($response->start_time),
+            'start_time' => str_replace(['T', 'Z'], [' ', ''],$response->start_time),
             'duration' => $response->duration,
             'status' => $response->status,
             'scheduled_by' => $schedule->scheduled_by
@@ -174,7 +174,7 @@ class ZoomController extends Controller {
             "agenda" => $response->agenda,
             "start_time" => $response->start_time,
             "duration" => $response->duration,
-            "start_url" => $response->start_url,
+            "start_url" => str_replace(['T', 'Z'], [' ', ''],$response->start_time),
             "join_url" => $response->join_url,
             "meet_link" => $response->join_url,
             "meeting_password" => $response->password
@@ -182,7 +182,7 @@ class ZoomController extends Controller {
 
         Notification::route('mail', $client->email)->notify(new ZoomMeetingNotification($meeting_data));
         Notification::route('mail', $matchmaker->email)->notify(new ZoomMeetingNotification($meeting_data));
-        
+
         echo "Please wait... it will redirect to your account.";
         return Redirect::to(env('APP_HOST').'/client/communication');
     }

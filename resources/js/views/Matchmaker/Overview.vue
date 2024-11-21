@@ -27,7 +27,33 @@
       <!-- Upcoming Meetings -->
       <div class="bg-white shadow-sm rounded-lg p-6">
         <h2 class="text-xl font-bold mb-2">Upcoming Meetings</h2>
-        <p>{{ upcomingMeeting.name }} - {{ upcomingMeeting.time }}</p>
+        <!-- <p>{{ upcomingMeeting.name }} - {{ upcomingMeeting.time }}</p> -->
+        <div v-if="meetings.length">
+          <div
+            :key="meetings[0].id"
+          >
+            <h3 class="text-lg font-bold mb-2">Meeting ID: {{ meetings[0].google_meet_id }}</h3>
+            <p class="text-gray-700">Start Time: {{ formatDate(meetings[0].start_time) }}</p>
+            <p class="text-gray-700">Duration: {{ meetings[0].duration }} minutes</p>
+
+            <div v-if="meetings[0].google_meet_link" class="mt-4">
+              <a
+                :href="meetings[0].google_meet_link"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-blue-600 hover:text-blue-800 underline"
+              >
+                Click join to Zoom
+              </a>
+            </div>
+
+            <div class="mt-4">
+              <h4 class="font-semibold mb-1">Client:</h4>
+              <p>{{ meetings[0].clients[0].name }} ({{ meetings[0].clients[0].email }})</p>
+            </div>
+          </div>
+        </div>
+        <div v-else class="text-gray-600">No upcoming meetings found.</div>
       </div>
 
       <!-- Match Success Rate -->
@@ -57,6 +83,8 @@
 </template>
 
 <script>
+import { parseISO, format } from 'date-fns';
+
 export default {
   name: "Overview",
   data() {
@@ -64,6 +92,7 @@ export default {
       totalClients: 24,
       activeMatches: 8,
       pendingRequests: 3,
+      meetings: [],
       upcomingMeeting: {
         name: 'John Doe',
         time: '2 PM on September 22, 2024',
@@ -81,6 +110,41 @@ export default {
       ],
     };
   },
+  computed: {
+    user() {
+        return this.$store.state.auth.user; // Correctly access the user object
+    },
+    authorization() {
+      return this.$store.state.auth.authorization; // Correctly access the authorization token
+    }
+  },
+  mounted() {
+    this.getUpcomingMeetings();
+  },
+  methods: {
+    formatDate(dateString) {
+      return format(parseISO(dateString), 'EEEE, MMMM d, yyyy h:mm a');
+    },
+    async getUpcomingMeetings() {
+      try {
+        const response = await axios.get('/api/google/upcoming-meetings', {
+          headers: {
+            Authorization: `Bearer ${this.authorization.token}`,
+          },
+        });
+        if (response.data.success) {
+          this.meetings = response.data.data;
+          console.log('Upcoming Meetings:', this.meetings);
+        } else {
+          console.error('Failed to fetch upcoming meetings:', response.data.message);
+          alert('Failed to fetch upcoming meetings. Please try again later.');
+        }
+      } catch (error) {
+        console.error('Error fetching upcoming meetings:', error);
+        alert('An error occurred while fetching upcoming meetings.');
+      }
+    },
+  }
 };
 </script>
   

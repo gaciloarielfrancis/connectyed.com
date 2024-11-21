@@ -21,6 +21,18 @@ return [
         'api_url' => env('GOOGLE_API_URL', 'https://www.googleapis.com/calendar/v3'),
     ],
 
+    'zoom' => [
+        'account_id' => env('ZOOM_ACCOUNT_ID'),
+        'client_id' => env('ZOOM_CLIENT_ID'),
+        'client_secret' => env('ZOOM_CLIENT_SECRET'),
+        'redirect_url' => env('ZOOM_REDIRECT_URI'),
+        'api_url' => env('ZOOM_API_URL'),
+        'auth_url' => env('ZOOM_AUTH_URL'),
+        'token_url' => env('ZOOM_TOKEN_URL'),
+        'token_secret' => env('ZOOM_TOKEN_SECRET'),
+        'token_verify' => env('ZOOM_TOKEN_VERIFY'),
+    ],
+
     'stripe' => [
         'key' => env('STRIPE_PUBLISHABLE_KEY'),
         'secret' => env('STRIPE_SECRET'),

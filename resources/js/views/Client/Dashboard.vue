@@ -74,5 +74,11 @@ export default {
       return this.$store.state.auth.profile;
     },
   },
+  mounted() {
+    
+  },
+  methods: {
+    
+  }
 };
 </script>

@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
         "php-open-source-saver/jwt-auth": "^2.3",
+        "spatie/icalendar-generator": "^2.8",
         "stripe/stripe-php": "^16.1"
     },
     "require-dev": {

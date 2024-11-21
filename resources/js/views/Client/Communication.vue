@@ -107,7 +107,7 @@
                 rel="noopener noreferrer"
                 class="text-blue-600 hover:text-blue-800 underline"
               >
-                Join Google Meet
+                Click join to Zoom
               </a>
             </div>
 
@@ -418,10 +418,11 @@ export default {
         );
 
         if (response.data.success) {
+          console.log(response.data)
           const { payment_link } = response.data.data;
 
           // Notify the user
-          alert('🔗 Redirecting to payment...');
+          // alert('🔗 Redirecting to payment...');
 
           // Redirect to Stripe Checkout
           window.location.href = payment_link;
@@ -490,7 +491,7 @@ export default {
         }
       } catch (error) {
         console.error('Error fetching clients:', error);
-        alert('An error occurred while fetching clients.');
+        // alert('An error occurred while fetching clients.');
       }
     },
   },

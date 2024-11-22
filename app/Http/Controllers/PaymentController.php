@@ -33,8 +33,9 @@ class PaymentController extends Controller
             $stripe = new StripeClient(config('services.stripe.secret'));
             
             // Determine the success and cancel URLs
-            $successUrl = config('app.url') . '/api/payment/success/' . $request->product_type . '?is_first_purchase=' . ($isFirstPurchase ? '1' : '0');
-            $cancelUrl = config('app.url') . '/api/payment/cancel';
+            // $successUrl = env('APP_HOST') . '/api/payment/success/' . $request->product_type . '?is_first_purchase=' . ($isFirstPurchase ? '1' : '0');
+            $successUrl = env('APP_HOST') . '/client/matchmakeravailability';
+            $cancelUrl = env('APP_HOST') . '/api/payment/cancel';
 
             // Prepare session data for Stripe Checkout
             $sessionData = [

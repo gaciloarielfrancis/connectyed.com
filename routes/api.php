@@ -50,6 +50,7 @@ Route::get('google/meetings/{id}', [GoogleMeetController::class, 'getMeeting']);
 // Zoom
 Route::post('zoom/pay-to-schedule', [ZoomController::class, 'payForMeeting'])->middleware('auth:api');
 Route::get('zoom/schedule-meeting/{token}', [ZoomController::class, 'scheduleMeeting']);
+Route::post('zoom/create-a-meeting', [ZoomController::class, 'createAMeeting']);
 
 // Token Management
 Route::post('/google/refresh-token', [GoogleMeetController::class, 'refreshGoogleToken'])->middleware('auth:api');

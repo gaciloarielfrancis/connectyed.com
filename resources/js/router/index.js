@@ -27,6 +27,7 @@ const ClientMessage = () => import('@/views/Client/Message.vue')
 const ClientBilling = () => import('@/views/Client/Billing.vue')
 const ClientCommunication = () => import('@/views/Client/Communication.vue')
 const ClientCriteria = () => import('@/views/Client/CriteriaManagement.vue') // Added Import
+const MatchMakerAvailability = () => import('@/views/Client/MatchMakerAvailability.vue')
 
 /* Matchmaker */
 const MatchmakerDashboard = () => import('@/views/Matchmaker/Dashboard.vue')
@@ -330,6 +331,10 @@ const routes = [
                     {
                         path: 'communication',
                         component: ClientCommunication
+                    },
+                    {
+                        path: 'matchmakeravailability',
+                        component: MatchMakerAvailability
                     },
                     // Added Criteria Route
                     {

@@ -111,7 +111,6 @@ class ZoomController extends Controller {
         ]);
 
         if($authUser->role === 'client') {
-            
             $paymentLink = $this->stripe->paymentLinks->create([
                 'line_items' => [[
                     'price' => 'price_1Q6dsqFZef913bMWGk4etNyd', // Use the specific Price ID
@@ -139,7 +138,55 @@ class ZoomController extends Controller {
         }
     }
 
-    public function scheduleMeeting($token) {
+    public function createAMeeting(Request $request) {
+        // Validate the incoming request data
+        $validator = Validator::make($request->all(), [
+            'matchmaker_id' => 'required|exists:users,id',
+            'client_ids' => 'required|array|min:1|max:2',
+            'start_time' => 'required|date',
+            'duration' => 'required|in:15,30,60,120,1440',
+        ]);
+
+        if ($validator->fails()) {
+            Log::warning('Validation failed for createMeeting', ['errors' => $validator->errors()]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid data provided.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $authUser = Auth::user();
+
+        if(!$authUser) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Please log in.',
+            ], 401);
+        }
+
+        $token = hash("md5", uniqid());
+        $id = $this->conn->table('pre_schedules')->insertGetId([
+            'token' => $token,
+            'matchmaker_id' => $request->matchmaker_id,
+            'client_id' => $request->client_ids[0],
+            'start_time' => $request->start_time,
+            'duration' => $request->duration,
+            'scheduled_by' => $authUser->id
+        ]);
+
+        $this->scheduleMeeting($token, true);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'payment_link' => env('APP_HOST').'/client/communication',
+            ],
+            'message' => 'Meeting created successfully.',
+        ], 201);
+    }
+
+    public function scheduleMeeting($token, $is_paid = false) {
         $schedule = $this->conn->table('pre_schedules')->where(['token' => $token])->first();
         $client = $this->conn->table('users')->where(['id' => $schedule->client_id])->first();
         $matchmaker = $this->conn->table('users')->where(['id' => $schedule->matchmaker_id])->first();
@@ -183,8 +230,11 @@ class ZoomController extends Controller {
         Notification::route('mail', $client->email)->notify(new ZoomMeetingNotification($meeting_data));
         Notification::route('mail', $matchmaker->email)->notify(new ZoomMeetingNotification($meeting_data));
 
-        echo "Please wait... it will redirect to your account.";
-        return Redirect::to(env('APP_HOST').'/client/communication');
+        if(!$is_paid) {
+            echo "Please wait... it will redirect to your account.";
+            return Redirect::to(env('APP_HOST').'/client/communication');
+        }
+        
     }
 
     public function createMeeting($data, $client, $matchmaker) {

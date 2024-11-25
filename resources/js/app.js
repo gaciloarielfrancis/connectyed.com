@@ -24,6 +24,8 @@ import App from './App.vue'; // Import your root component
 
 // Import vue-gtag for Google Analytics
 import VueGtag from 'vue-gtag';
+// Google Tag Manager
+import { createGtm } from '@gtm-support/vue-gtm';
 
 // Initialize the store
 store.dispatch('auth/initialize').then(() => {
@@ -33,7 +35,12 @@ store.dispatch('auth/initialize').then(() => {
     app.use(VueGtag, {
         config: { id: 'G-V14H8KVHQZ' } // Replace with your Google Analytics Measurement ID
     }, Router);
-
+    app.use(
+        createGtm({
+          id: "G-V14H8KVHQZ",
+          vueRouter: Router
+        })
+    )
     app.use(Router);
     app.use(store);
     app.mount('#app');

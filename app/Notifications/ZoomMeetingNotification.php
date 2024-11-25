@@ -31,8 +31,18 @@ class ZoomMeetingNotification extends Notification
                     ->greeting('Good day!')
                     ->line('I hope this message finds you well. This is a friendly reminder that you have a scheduled meeting.')
                     ->line('Agenda: '.$this->meeting['agenda'])
-                    ->line('Date: '.date_format($datetime, "F j, Y"))
-                    ->line('Time: '.date_format($datetime, "g:i a"))
+                    ->line('Reason: '.$this->meeting['meeting_response'])
+                    ->line('Schedule/s:')
+                    ->when(count($this->meeting['schedules']) > 0, function (MailMessage $mail) { 
+                        foreach ($this->meeting['schedules'] as $schedule) {
+                            $from = date_format(date_create($schedule->date . ' ' .$schedule->from), 'F j, Y g:ia');
+                            $to = date_format(date_create($schedule->date . ' ' .$schedule->to), 'g:ia');
+                            $mail->line($from . ' - ' . $to);
+                        }
+                        return $mail;
+                    }
+                    )
+                    ->line('Timezone: '.$this->meeting['timezone'])
                     ->action('Click to Join Meeting', $this->meeting['meet_link'])
                     ->line("Please ensure that you're available and prepared for the meeting")
                     ->line('Thank you for using our application!');

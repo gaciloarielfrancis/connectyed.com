@@ -37,7 +37,7 @@
                     <router-link :to="{ name: 'home' }" class="nav-link hidden">Home</router-link>
                   </li>
                   <li>
-                    <router-link :to="{ name: 'matchmaker' }" class="nav-link">Dashboard</router-link>
+                    <router-link :to="{ name: 'matchmaker/request-meeting' }" class="nav-link">Request for Meeting</router-link>
                   </li>
                 </ul>
               </div>

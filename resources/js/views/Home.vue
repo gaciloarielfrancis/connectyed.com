@@ -9,7 +9,7 @@
 
     <!-- Add Login Button -->
     <div class="login-button-container">
-      <a href="https://www.connectyed.com/login" class="login-button">Login</a>
+      <a href="login" class="login-button">Login</a>
     </div>
 
     <!-- Marker Points -->
@@ -645,6 +645,7 @@ a.bg-connectyed-button-light:hover, .router-link.bg-connectyed-button-light:hove
   position: absolute;
   top: 32px;
   right: 32px;
+  z-index: 1000;
 }
 
 .login-button {

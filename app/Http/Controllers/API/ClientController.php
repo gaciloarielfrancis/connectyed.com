@@ -23,10 +23,15 @@ class ClientController extends Controller
      *
      * @return void
      */
+
+    private $conn;
+
     public function __construct()
     {
         // Apply both 'auth:api' and 'verified' middleware
         $this->middleware(['auth:api', 'verified'])->except(['getPublicClientsByMatchmakerId']);
+
+        $this->conn = DB::connection();
     }
 
     /**
@@ -439,6 +444,25 @@ class ClientController extends Controller
                 'trace' => config('app.debug') ? $e->getTraceAsString() : null
             ], 500);
         }
+    }
+
+    public function getAllClientsBasicInfo(Request $request) {
+        $user = Auth::user();
+            
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthenticated'
+            ], 401);
+        }
+
+        $clients = $this->conn->select('SELECT id, name, email FROM users WHERE role="client" AND email_verified_at IS NOT NULL ORDER BY name ASC');
+        
+        return response()->json([
+            'success' => true,
+            'data' => $clients,
+            'message' => 'Clients fetched successfully'
+        ]);
     }
 
     /**

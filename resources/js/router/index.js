@@ -40,6 +40,7 @@ const MatchmakerClients = () => import('@/views/Matchmaker/Clients.vue')
 const MatchmakerAvailability= () => import('@/views/Matchmaker/Availability.vue')
 const MatchmakerBilling = () => import('@/views/Matchmaker/Billing.vue')
 const MatchmakerCommunication = () => import('@/views/Matchmaker/Communication.vue')
+const MatchmakerRequestMeeting = () => import('@/views/Matchmaker/RequestMeeting.vue')
 
 /* Admin */
 const AdminLayout = () => import('@/views/Admin/Layout.vue')
@@ -288,6 +289,11 @@ const routes = [
                     {
                         path: 'match-management',
                         component: MatchmakerMatchManagement
+                    },
+                    {
+                        name: 'matchmaker/request-meeting',
+                        path: 'request-meeting',
+                        component: MatchmakerRequestMeeting
                     }
                   ]
             }

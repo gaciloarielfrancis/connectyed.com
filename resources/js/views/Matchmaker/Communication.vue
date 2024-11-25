@@ -300,7 +300,7 @@ export default {
       if (!this.isAuthenticated) return;
       this.processing = true;
       try {
-        const response = await axios.get('/api/google/upcoming-meetings', {
+        const response = await axios.get('/api/zoom/upcoming-meetings', {
           headers: { Authorization: `Bearer ${this.authorization.token}` },
         });
 

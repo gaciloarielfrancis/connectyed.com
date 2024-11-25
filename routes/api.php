@@ -48,9 +48,13 @@ Route::get('/google/upcoming-meetings', [GoogleMeetController::class, 'getUpcomi
 Route::get('google/meetings/{id}', [GoogleMeetController::class, 'getMeeting']);
 
 // Zoom
+Route::get('zoom/proceed-payment/{id}', [ZoomController::class, 'proceedPayment']);
+Route::get('zoom/confirm-payment/{token}', [ZoomController::class, 'confirmPayment']);
 Route::post('zoom/pay-to-schedule', [ZoomController::class, 'payForMeeting'])->middleware('auth:api');
 Route::get('zoom/schedule-meeting/{token}', [ZoomController::class, 'scheduleMeeting']);
 Route::post('zoom/create-a-meeting', [ZoomController::class, 'createAMeeting']);
+Route::post('zoom/request-a-meeting', [ZoomController::class, 'requestAMeeting']);
+Route::get('zoom/upcoming-meetings', [ZoomController::class, 'getUpcomingMeetings']);
 
 // Token Management
 Route::post('/google/refresh-token', [GoogleMeetController::class, 'refreshGoogleToken'])->middleware('auth:api');
@@ -105,6 +109,7 @@ Route::middleware(['auth:api'])->group(function () {
 // Clients Routes
 Route::middleware('auth:api')->get('/clients', [ClientController::class, 'index']);
 Route::middleware('auth:api')->get('/clients/all', [ClientController::class, 'getAllClients']);
+Route::middleware('auth:api')->get('/clients/allbasic', [ClientController::class, 'getAllClientsBasicInfo']);
 
 // Availability Routes
 Route::middleware('auth:api')->group(function () {

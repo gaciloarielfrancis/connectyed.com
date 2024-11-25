@@ -96,9 +96,23 @@
             :key="meeting.id"
             class="bg-white rounded-lg shadow-md p-6"
           >
-            <h3 class="text-lg font-bold mb-2">Meeting ID: {{ meeting.google_meet_id }}</h3>
-            <p class="text-gray-700">Start Time: {{ formatDate(meeting.start_time) }}</p>
-            <p class="text-gray-700">Duration: {{ meeting.duration }} minutes</p>
+            <h3 class="text-lg font-bold">Meeting ID: {{ meeting.google_meet_id }}</h3>
+			<div class="text-gray-700 mt-2 text-sm">
+				<div class="mt-2">
+					<b>Schedule/s:</b><br/>
+					<div v-for="schedule in meeting.schedules">
+						{{ formatDateTime(schedule.date + ' ' + schedule.from, 'EEEE, MMMM d, yyyy h:mma') }} - {{ formatDateTime(schedule.date + ' ' + schedule.to, 'h:mma') }}
+					</div>
+				</div>
+				<div class="mt-2">
+					<b>Timezone:</b> {{ meeting.timezone }}
+				</div>
+				<div class="mt-2">
+					<b>Duration:</b> {{ meeting.duration }} minutes<br/>
+				</div>
+			</div>
+            <!-- <p class="text-gray-700">Start Time: {{ formatDate(meeting.start_time, 'EEEE, MMMM d, yyyy h:mma') }}</p>
+            <p class="text-gray-700">Duration: {{ meeting.duration }} minutes</p> -->
 
             <div v-if="meeting.google_meet_link" class="mt-4">
               <a
@@ -110,10 +124,20 @@
                 Click join to Zoom
               </a>
             </div>
+            <div v-else class="mt-4">
+              <a
+			  	:href="'/api/zoom/proceed-payment/' + meeting.id"
+                target="_self"
+                rel="noopener noreferrer"
+                class="text-blue-600 hover:text-blue-800 underline"
+              >
+                Proceed Payment
+              </a>
+            </div>
 
             <div class="mt-4">
-              <h4 class="font-semibold mb-1">Matchmaker:</h4>
-              <p>{{ meeting.matchmaker.name }} ({{ meeting.matchmaker.email }})</p>
+              <h3 class="text-lg font-bold">Matchmaker:</h3>
+              <p class="text-sm">{{ meeting.matchmaker.name }} ({{ meeting.matchmaker.email }})</p>
             </div>
           </div>
         </div>
@@ -138,6 +162,7 @@ import axios from 'axios';
 import { parseISO, format, isValid } from 'date-fns';
 import Messaging from '@/components/Messaging.vue'; // Adjust the path as necessary
 import { mapState } from 'vuex';
+import { formatDateTime } from '../../components/Utils';
 
 export default {
   name: 'Communication',
@@ -157,7 +182,8 @@ export default {
       showDropdown: false,
       duration: 30, // Default duration
       selectedClients: [], // Selected clients for matchmaker
-      clients: [], // List of all clients
+      clients: [], // List of all clients,
+	  formatDateTime: formatDateTime,
     };
   },
   computed: {
@@ -443,9 +469,9 @@ export default {
      * @param {String} dateString - The date string.
      * @returns {String} - Formatted date string.
      */
-    formatDate(dateString) {
-      return format(parseISO(dateString), 'EEEE, MMMM d, yyyy h:mm a');
-    },
+    // formatDate(dateString) {
+    //   return format(parseISO(dateString), 'EEEE, MMMM d, yyyy h:mm a');
+    // },
 
     /**
      * Fetch upcoming meetings for the client.
@@ -453,7 +479,7 @@ export default {
     async getUpcomingMeetings() {
       if (!this.isAuthenticated) return;
       try {
-        const response = await axios.get('/api/google/upcoming-meetings', {
+        const response = await axios.get('/api/zoom/upcoming-meetings', {
           headers: {
             Authorization: `Bearer ${this.authorization.token}`,
           },
